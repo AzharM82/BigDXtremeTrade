@@ -28,7 +28,7 @@ jobs:
           cp -r src deploy/
           cp -r config deploy/
           cp requirements.txt deploy/
-          [ -f mainlist.csv ] && cp mainlist.csv deploy/
+          [ -f mainlist.csv ] && cp mainlist.csv deploy/ || true
 
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
