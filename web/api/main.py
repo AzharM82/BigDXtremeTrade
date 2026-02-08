@@ -13,7 +13,13 @@ from pathlib import Path
 from typing import Optional
 
 # Add project root to sys.path so `src.*` and `config.*` imports resolve
-PROJECT_ROOT = Path(__file__).parent.parent.parent
+# In local dev, main.py is at web/api/ so root is ../../
+# In Azure deploy (flattened), main.py is at root alongside src/ and config/
+_script_dir = Path(__file__).parent
+if (_script_dir / "src").is_dir():
+    PROJECT_ROOT = _script_dir  # flattened deploy
+else:
+    PROJECT_ROOT = _script_dir.parent.parent  # local dev (web/api -> root)
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
@@ -37,7 +43,7 @@ logger = logging.getLogger("BigDXtremeTrade-API")
 # Paths
 BASE_DIR = PROJECT_ROOT
 MAINLIST_PATH = BASE_DIR / "mainlist.csv"
-DATA_DIR = BASE_DIR / "web" / "data"
+DATA_DIR = BASE_DIR / "data" if (BASE_DIR / "src").is_dir() else BASE_DIR / "web" / "data"
 SCAN_RESULTS_FILE = DATA_DIR / "scan_results.json"
 
 # Create data directory

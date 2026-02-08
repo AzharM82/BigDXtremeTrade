@@ -1,0 +1,283 @@
+Ticker,Company,Sector,Industry
+RDDT,Reddit Inc,Communication Services,Internet Content & Information
+EHC,Encompass Health Corp,Healthcare,Medical Care Facilities
+BE,Bloom Energy Corp,Industrials,Electrical Equipment & Parts
+FSLR,First Solar Inc,Technology,Solar
+NWSA,News Corp,Communication Services,Entertainment
+AFRM,Affirm Holdings Inc,Financial,Credit Services
+DVA,DaVita Inc,Healthcare,Medical Care Facilities
+TEAM,Atlassian Corporation,Technology,Software - Application
+ILMN,Illumina Inc,Healthcare,Diagnostics & Research
+CG,Carlyle Group Inc,Financial,Asset Management
+RKT,Rocket Companies Inc,Financial,Mortgage Finance
+BBIO,BridgeBio Pharma Inc,Healthcare,Biotechnology
+SPGI,S&P Global Inc,Financial,Financial Data & Stock Exchanges
+SNDK,Sandisk Corp,Technology,Computer Hardware
+PCOR,Procore Technologies Inc,Technology,Software - Application
+ZS,Zscaler Inc,Technology,Software - Infrastructure
+NDAQ,Nasdaq Inc,Financial,Financial Data & Stock Exchanges
+FIG,Figma Inc,Technology,Software - Application
+NXE,NexGen Energy Ltd,Energy,Uranium
+DASH,DoorDash Inc,Consumer Cyclical,Internet Retail
+NYT,New York Times Co,Communication Services,Publishing
+CSGP,"Costar Group, Inc",Real Estate,Real Estate Services
+FIGR,Figure Technology Solutions Inc,Financial,Capital Markets
+FROG,JFrog Ltd,Technology,Software - Application
+ARWR,Arrowhead Pharmaceuticals Inc,Healthcare,Biotechnology
+RBLX,Roblox Corporation,Communication Services,Electronic Gaming & Multimedia
+SIRI,Sirius XM Holdings Inc,Communication Services,Entertainment
+FTV,Fortive Corp,Technology,Scientific & Technical Instruments
+TRI,Thomson-Reuters Corp,Industrials,Specialty Business Services
+SE,Sea Ltd ADR,Consumer Cyclical,Internet Retail
+KLAR,Klarna Group plc,Technology,Software - Infrastructure
+KVYO,Klaviyo Inc,Technology,Software - Application
+UBER,Uber Technologies Inc,Technology,Software - Application
+ROKU,Roku Inc,Communication Services,Entertainment
+TTWO,"Take-Two Interactive Software, Inc",Communication Services,Electronic Gaming & Multimedia
+NOW,ServiceNow Inc,Technology,Software - Application
+WMG,Warner Music Group Corp,Communication Services,Entertainment
+EBAY,EBay Inc,Consumer Cyclical,Internet Retail
+GPCR,Structure Therapeutics Inc ADR,Healthcare,Biotechnology
+MRNA,Moderna Inc,Healthcare,Biotechnology
+KGC,Kinross Gold Corp,Basic Materials,Gold
+SPOT,Spotify Technology S.A,Communication Services,Internet Content & Information
+CTSH,Cognizant Technology Solutions Corp,Technology,Information Technology Services
+VST,Vistra Corp,Utilities,Utilities - Independent Power Producers
+CRM,Salesforce Inc,Technology,Software - Application
+GGAL,Grupo Financiero Galicia ADR,Financial,Banks - Regional
+SHOP,Shopify Inc,Technology,Software - Application
+TECH,Bio-Techne Corp,Healthcare,Biotechnology
+MMYT,MakeMyTrip Ltd,Consumer Cyclical,Travel Services
+TOST,Toast Inc,Technology,Software - Infrastructure
+BX,Blackstone Inc,Financial,Asset Management
+GFI,Gold Fields Ltd ADR,Basic Materials,Gold
+MTSI,MACOM Technology Solutions Holdings Inc,Technology,Semiconductors
+PLTR,Palantir Technologies Inc,Technology,Software - Infrastructure
+SNPS,"Synopsys, Inc",Technology,Software - Infrastructure
+EXLS,ExlService Holdings Inc,Technology,Information Technology Services
+TEX,Terex Corp,Industrials,Farm & Heavy Construction Machinery
+HMY,Harmony Gold Mining Co Ltd ADR,Basic Materials,Gold
+B,Barrick Mining Corp,Basic Materials,Gold
+KKR,KKR & Co. Inc,Financial,Asset Management
+IMVT,Immunovant Inc,Healthcare,Biotechnology
+ARES,Ares Management Corp,Financial,Asset Management
+GLXY,Galaxy Digital Inc,Financial,Capital Markets
+FOUR,Shift4 Payments Inc,Technology,Software - Infrastructure
+STX,Seagate Technology Holdings Plc,Technology,Computer Hardware
+GME,Gamestop Corporation,Consumer Cyclical,Specialty Retail
+GWRE,Guidewire Software Inc,Technology,Software - Application
+SSNC,SS&C Technologies Holdings Inc,Technology,Software - Application
+CLS,"Celestica, Inc",Technology,Electronic Components
+SAIL,Sailpoint Inc,Technology,Software - Infrastructure
+DT,Dynatrace Inc,Technology,Software - Application
+VSAT,"Viasat, Inc",Technology,Communication Equipment
+TW,Tradeweb Markets Inc,Financial,Capital Markets
+HBM,Hudbay Minerals Inc,Basic Materials,Copper
+GH,Guardant Health Inc,Healthcare,Diagnostics & Research
+PANW,Palo Alto Networks Inc,Technology,Software - Infrastructure
+CCJ,Cameco Corp,Energy,Uranium
+WDAY,Workday Inc,Technology,Software - Application
+COGT,Cogent Biosciences Inc,Healthcare,Biotechnology
+ESTC,Elastic N.V,Technology,Software - Application
+SATS,EchoStar Corp,Communication Services,Telecom Services
+SMTC,Semtech Corp,Technology,Semiconductors
+MDB,MongoDB Inc,Technology,Software - Infrastructure
+TTAN,ServiceTitan Inc,Technology,Software - Application
+AU,AngloGold Ashanti Plc,Basic Materials,Gold
+WPM,Wheaton Precious Metals Corp,Basic Materials,Gold
+CEF,Sprott Physical Gold and Silver Trust,Financial,Asset Management
+Z,Zillow Group Inc,Communication Services,Internet Content & Information
+INTU,Intuit Inc,Technology,Software - Application
+GLBE,Global E Online Ltd,Consumer Cyclical,Internet Retail
+LYB,LyondellBasell Industries NV,Basic Materials,Specialty Chemicals
+UEC,Uranium Energy Corp,Energy,Uranium
+NTRA,Natera Inc,Healthcare,Diagnostics & Research
+CYTK,Cytokinetics Inc,Healthcare,Biotechnology
+MIR,Mirion Technologies Inc,Industrials,Specialty Industrial Machinery
+TTMI,TTM Technologies Inc,Technology,Electronic Components
+EL,"Estee Lauder Cos., Inc",Consumer Defensive,Household & Personal Products
+PCVX,Vaxcyte Inc,Healthcare,Biotechnology
+LPX,Louisiana-Pacific Corp,Industrials,Building Products & Equipment
+EXPE,Expedia Group Inc,Consumer Cyclical,Travel Services
+APP,Applovin Corp,Communication Services,Advertising Agencies
+BSY,Bentley Systems Inc,Technology,Software - Application
+BWXT,BWX Technologies Inc,Industrials,Aerospace & Defense
+EGO,Eldorado Gold Corp,Basic Materials,Gold
+WLK,Westlake Corporation,Basic Materials,Specialty Chemicals
+FTAI,FTAI Aviation Ltd,Industrials,Rental & Leasing Services
+DOX,Amdocs Ltd,Technology,Software - Infrastructure
+DOCU,DocuSign Inc,Technology,Software - Application
+CRK,"Comstock Resources, Inc",Energy,Oil & Gas E&P
+ODFL,"Old Dominion Freight Line, Inc",Industrials,Trucking
+VIAV,Viavi Solutions Inc,Technology,Communication Equipment
+BLDR,Builders Firstsource Inc,Industrials,Building Products & Equipment
+ALB,Albemarle Corp,Basic Materials,Specialty Chemicals
+ORCL,Oracle Corp,Technology,Software - Infrastructure
+RVTY,Revvity Inc,Healthcare,Diagnostics & Research
+LITE,Lumentum Holdings Inc,Technology,Communication Equipment
+SBSW,Sibanye Stillwater Limited ADR,Basic Materials,Other Precious Metals & Mining
+DRS,Leonardo DRS Inc,Industrials,Aerospace & Defense
+ATI,ATI Inc,Industrials,Metal Fabrication
+OWL,Blue Owl Capital Inc,Financial,Asset Management
+AAON,AAON Inc,Industrials,Building Products & Equipment
+DKNG,DraftKings Inc,Consumer Cyclical,Gambling
+IQV,IQVIA Holdings Inc,Healthcare,Diagnostics & Research
+CHYM,Chime Financial Inc,Technology,Software - Application
+ENPH,Enphase Energy Inc,Technology,Solar
+MTCH,Match Group Inc,Communication Services,Internet Content & Information
+DDOG,Datadog Inc,Technology,Software - Application
+NXT,Nextpower Inc,Technology,Solar
+IOT,Samsara Inc,Technology,Software - Infrastructure
+DOW,Dow Inc,Basic Materials,Chemicals
+CAI,Caris Life Sciences Inc,Healthcare,Biotechnology
+OTF,Blue Owl Technology Finance Corp,Financial,Asset Management
+ZM,Zoom Communications Inc,Technology,Software - Application
+EFX,"Equifax, Inc",Industrials,Consulting Services
+AGI,Alamos Gold Inc,Basic Materials,Gold
+TRU,TransUnion,Financial,Financial Data & Stock Exchanges
+REZI,Resideo Technologies Inc,Industrials,Industrial Distribution
+HL,Hecla Mining Co,Basic Materials,Other Precious Metals & Mining
+EQX,Equinox Gold Corp,Basic Materials,Gold
+TTD,Trade Desk Inc,Communication Services,Advertising Agencies
+TEM,Tempus AI Inc,Healthcare,Health Information Services
+MOD,Modine Manufacturing Co,Consumer Cyclical,Auto Parts
+NVO,Novo Nordisk ADR,Healthcare,Drug Manufacturers - General
+CRWD,Crowdstrike Holdings Inc,Technology,Software - Infrastructure
+HUBS,HubSpot Inc,Technology,Software - Application
+ORLA,Orla Mining Ltd,Basic Materials,Gold
+KRMN,Karman Holdings Inc,Industrials,Aerospace & Defense
+VSCO,Victoria's Secret & Co,Consumer Cyclical,Apparel Retail
+CPNG,Coupang Inc,Consumer Cyclical,Internet Retail
+DUOL,Duolingo Inc,Technology,Software - Application
+APO,Apollo Global Management Inc,Financial,Asset Management
+GEV,GE Vernova Inc,Industrials,Specialty Industrial Machinery
+SOFI,SoFi Technologies Inc,Financial,Credit Services
+FND,Floor & Decor Holdings Inc,Consumer Cyclical,Home Improvement Retail
+CEG,Constellation Energy Corporation,Utilities,Utilities - Independent Power Producers
+JBL,Jabil Inc,Technology,Electronic Components
+IAG,Iamgold Corp,Basic Materials,Gold
+IT,"Gartner, Inc",Technology,Information Technology Services
+BTSG,BrightSpring Health Services Inc,Healthcare,Health Information Services
+INTC,Intel Corp,Technology,Semiconductors
+APH,Amphenol Corp,Technology,Electronic Components
+CVNA,Carvana Co,Consumer Cyclical,Auto & Truck Dealerships
+TPG,TPG Inc,Financial,Asset Management
+PAAS,Pan American Silver Corp,Basic Materials,Gold
+HIMS,Hims & Hers Health Inc,Healthcare,Drug Manufacturers - Specialty & Generic
+PEGA,Pegasystems Inc,Technology,Software - Application
+FLEX,Flex Ltd,Technology,Electronic Components
+BVN,Compania de Minas Buenaventura S.A. ADR,Basic Materials,Other Precious Metals & Mining
+CIEN,CIENA Corp,Technology,Communication Equipment
+UUUU,Energy Fuels Inc,Energy,Uranium
+NTNX,Nutanix Inc,Technology,Software - Infrastructure
+Q,Qnity Electronics Inc,Technology,Semiconductor Equipment & Materials
+OTEX,Open Text Corp,Technology,Software - Application
+MGM,MGM Resorts International,Consumer Cyclical,Resorts & Casinos
+GTLB,Gitlab Inc,Technology,Software - Infrastructure
+AS,Amer Sports Inc,Consumer Cyclical,Leisure
+DELL,Dell Technologies Inc,Technology,Computer Hardware
+G,Genpact Ltd,Technology,Information Technology Services
+GPGI,GPGI Inc,Industrials,Metal Fabrication
+LSCC,Lattice Semiconductor Corp,Technology,Semiconductors
+IBKR,Interactive Brokers Group Inc,Financial,Capital Markets
+W,Wayfair Inc,Consumer Cyclical,Internet Retail
+SNOW,Snowflake Inc,Technology,Software - Application
+MP,MP Materials Corporation,Basic Materials,Other Industrial Metals & Mining
+ASX,ASE Technology Holding Co.Ltd ADR,Technology,Semiconductors
+PWR,"Quanta Services, Inc",Industrials,Engineering & Construction
+IP,International Paper Co,Consumer Cyclical,Packaging & Containers
+PFGC,Performance Food Group Company,Consumer Defensive,Food Distribution
+AVGO,Broadcom Inc,Technology,Semiconductors
+CLF,Cleveland-Cliffs Inc,Basic Materials,Steel
+ETN,Eaton Corporation plc,Industrials,Specialty Industrial Machinery
+ASTS,AST SpaceMobile Inc,Technology,Communication Equipment
+SCCO,Southern Copper Corporation,Basic Materials,Copper
+U,Unity Software Inc,Technology,Software - Application
+OKTA,Okta Inc,Technology,Software - Infrastructure
+CHWY,Chewy Inc,Consumer Cyclical,Internet Retail
+CE,Celanese Corp,Basic Materials,Chemicals
+AMAT,Applied Materials Inc,Technology,Semiconductor Equipment & Materials
+AVAV,AeroVironment Inc,Industrials,Aerospace & Defense
+MU,Micron Technology Inc,Technology,Semiconductors
+WDC,Western Digital Corp,Technology,Computer Hardware
+RBRK,Rubrik Inc,Technology,Software - Infrastructure
+TWLO,Twilio Inc,Technology,Software - Infrastructure
+MRVL,Marvell Technology Inc,Technology,Semiconductors
+NEM,Newmont Corp,Basic Materials,Gold
+NGD,New Gold Inc,Basic Materials,Gold
+PSLV,Sprott Physical Silver Trust,Financial,Asset Management
+TPR,Tapestry Inc,Consumer Cyclical,Luxury Goods
+ANET,Arista Networks Inc,Technology,Computer Hardware
+PACS,PACS Group Inc,Healthcare,Medical Care Facilities
+CELH,Celsius Holdings Inc,Consumer Defensive,Beverages - Non-Alcoholic
+LRCX,Lam Research Corp,Technology,Semiconductor Equipment & Materials
+IREN,IREN Ltd,Financial,Capital Markets
+NET,Cloudflare Inc,Technology,Software - Infrastructure
+NVT,nVent Electric plc,Industrials,Electrical Equipment & Parts
+MKSI,MKS Inc,Technology,Scientific & Technical Instruments
+KLAC,KLA Corp,Technology,Semiconductor Equipment & Materials
+LMND,Lemonade Inc,Financial,Insurance - Property & Casualty
+RKLB,Rocket Lab Corp,Industrials,Aerospace & Defense
+PATH,UiPath Inc,Technology,Software - Infrastructure
+GDS,GDS Holdings Limited ADR,Technology,Information Technology Services
+COHR,Coherent Corp,Technology,Scientific & Technical Instruments
+NE,Noble Corp Plc,Energy,Oil & Gas Drilling
+TSEM,Tower Semiconductor Ltd,Technology,Semiconductors
+ETSY,Etsy Inc,Consumer Cyclical,Internet Retail
+ESI,Element Solutions Inc,Basic Materials,Specialty Chemicals
+ABVX,Abivax ADR,Healthcare,Biotechnology
+ALGN,"Align Technology, Inc",Healthcare,Medical Instruments & Supplies
+ROIV,Roivant Sciences Ltd,Healthcare,Biotechnology
+CDE,Coeur Mining Inc,Basic Materials,Gold
+DOCN,DigitalOcean Holdings Inc,Technology,Software - Infrastructure
+AMD,Advanced Micro Devices Inc,Technology,Semiconductors
+PL,Planet Labs PBC,Industrials,Aerospace & Defense
+FORM,FormFactor Inc,Technology,Semiconductor Equipment & Materials
+KTOS,Kratos Defense & Security Solutions Inc,Industrials,Aerospace & Defense
+AG,First Majestic Silver Corporation,Basic Materials,Silver
+ALGM,Allegro Microsystems Inc,Technology,Semiconductors
+CRCL,Circle Internet Group Inc,Financial,Capital Markets
+GLW,"Corning, Inc",Technology,Electronic Components
+HOOD,Robinhood Markets Inc,Financial,Capital Markets
+BROS,Dutch Bros Inc,Consumer Cyclical,Restaurants
+TER,"Teradyne, Inc",Technology,Semiconductor Equipment & Materials
+ALK,Alaska Air Group Inc,Industrials,Airlines
+KD,Kyndryl Holdings Inc,Technology,Information Technology Services
+SYM,Symbotic Inc,Industrials,Specialty Industrial Machinery
+COIN,Coinbase Global Inc,Financial,Financial Data & Stock Exchanges
+CCL,Carnival Corp,Consumer Cyclical,Travel Services
+RIVN,Rivian Automotive Inc,Consumer Cyclical,Auto Manufacturers
+JOBY,Joby Aviation Inc,Industrials,Airports & Air Services
+QXO,QXO Inc,Industrials,Industrial Distribution
+PSTG,Pure Storage Inc,Technology,Computer Hardware
+NCLH,Norwegian Cruise Line Holdings Ltd,Consumer Cyclical,Travel Services
+SM,SM Energy Co,Energy,Oil & Gas E&P
+RMBS,Rambus Inc,Technology,Semiconductors
+CAVA,Cava Group Inc,Consumer Cyclical,Restaurants
+PONY,Pony AI Inc. ADR,Technology,Information Technology Services
+CORZ,Core Scientific Inc,Technology,Software - Infrastructure
+CIFR,Cipher Mining Inc,Financial,Capital Markets
+SMCI,Super Micro Computer Inc,Technology,Computer Hardware
+CRDO,Credo Technology Group Holding Ltd,Technology,Semiconductors
+UAL,United Airlines Holdings Inc,Industrials,Airlines
+VRT,Vertiv Holdings Co,Industrials,Electrical Equipment & Parts
+HUT,Hut 8 Corp,Financial,Capital Markets
+AMKR,AMKOR Technology Inc,Technology,Semiconductor Equipment & Materials
+ENTG,Entegris Inc,Technology,Semiconductor Equipment & Materials
+NBIS,Nebius Group N.V,Technology,Software - Infrastructure
+XPO,XPO Inc,Industrials,Trucking
+BMNR,BitMine Immersion Technologies Inc,Financial,Capital Markets
+LGN,Legence Corp,Industrials,Engineering & Construction
+OKLO,Oklo Inc,Utilities,Utilities - Independent Power Producers
+IONQ,IonQ Inc,Technology,Computer Hardware
+ARM,Arm Holdings plc. ADR,Technology,Semiconductors
+RIOT,Riot Platforms Inc,Financial,Capital Markets
+SMR,NuScale Power Corporation,Industrials,Specialty Industrial Machinery
+ALAB,Astera Labs Inc,Technology,Semiconductors
+WULF,TeraWulf Inc,Financial,Capital Markets
+RGTI,Rigetti Computing Inc,Technology,Computer Hardware
+CRWV,CoreWeave Inc,Technology,Software - Infrastructure
+QBTS,D-Wave Quantum Inc,Technology,Computer Hardware
+DOCS,Doximity Inc,Healthcare,Health Information Services
+MSTR,Strategy Inc,Technology,Software - Application
+APLD,Applied Digital Corporation,Technology,Information Technology Services
