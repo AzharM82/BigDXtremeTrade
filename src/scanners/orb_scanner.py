@@ -47,22 +47,23 @@ class ORBScanner:
         opportunities = []
 
         if tickers is None:
+            # No watchlist provided — discover from FinViz + market movers
             try:
                 high_adr = self.finviz.get_high_adr_stocks()
                 tickers = [row.get("Ticker", "") for row in high_adr if row.get("Ticker")]
             except Exception:
                 tickers = []
 
-        # Add today's top movers from Polygon
-        try:
-            gainers = self.polygon.get_gainers_losers("gainers")
-            losers = self.polygon.get_gainers_losers("losers")
-            for item in (gainers + losers)[:20]:
-                t = item.get("ticker", "")
-                if t and t not in tickers:
-                    tickers.append(t)
-        except Exception as e:
-            logger.warning(f"Could not fetch gainers/losers: {e}")
+            # Augment with today's top movers (only in discovery mode)
+            try:
+                gainers = self.polygon.get_gainers_losers("gainers")
+                losers = self.polygon.get_gainers_losers("losers")
+                for item in (gainers + losers)[:20]:
+                    t = item.get("ticker", "")
+                    if t and t not in tickers:
+                        tickers.append(t)
+            except Exception as e:
+                logger.warning(f"Could not fetch gainers/losers: {e}")
 
         for ticker in tickers:
             try:
@@ -93,7 +94,7 @@ class ORBScanner:
 
         # Get intraday 5-min bars for today
         today_str = today.strftime("%Y-%m-%d")
-        intraday = self.polygon.get_intraday_bars(ticker, today_str, multiplier=5)
+        intraday = self.polygon.get_intraday_bars(ticker, today_str, today_str, multiplier=5)
         if len(intraday) < 6:  # Need at least 30 min of data
             return None
 

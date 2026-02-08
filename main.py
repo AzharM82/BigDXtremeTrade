@@ -5,6 +5,7 @@ Usage:
     python main.py weekly-prep          # Sunday night preparation
     python main.py premarket            # Pre-market scan (6-9:30 AM ET)
     python main.py orb                  # Opening Range Breakout scan (9:30-10:30 AM)
+    python main.py momentum             # Big movers: 10%+ day, 20%+ week
     python main.py scan [TICKER...]     # Scan specific tickers
     python main.py status               # Risk management status
     python main.py report               # Full opportunity report
@@ -27,15 +28,32 @@ logger = logging.getLogger("BigDXtremeTrade")
 
 
 def main():
-    config = get_config()
-    engine = OpportunityEngine(config)
-    dashboard = PrepDashboard(config.journal_dir)
-
     if len(sys.argv) < 2:
         print(__doc__)
         return
 
     command = sys.argv[1].lower()
+
+    # Initialize config and engine
+    config = get_config()
+
+    # Check for required API key
+    if not config.polygon.api_key:
+        print("\nError: POLYGON_API_KEY environment variable is not set.")
+        print("\nTo set up:")
+        print("  1. Copy .env.example to .env")
+        print("  2. Add your Polygon.io API key")
+        print("  3. Run: set POLYGON_API_KEY=your_key (Windows)")
+        print("     Or:  export POLYGON_API_KEY=your_key (Unix)")
+        return
+
+    try:
+        engine = OpportunityEngine(config)
+    except ValueError as e:
+        print(f"\nConfiguration error: {e}")
+        return
+
+    dashboard = PrepDashboard(config.journal_dir)
 
     if command == "weekly-prep":
         print("\nRunning weekly preparation scan...\n")
@@ -63,6 +81,54 @@ def main():
         orb_opps = results.get("orb_opportunities", [])
         report = engine.format_opportunity_report(orb_opps)
         print(report)
+
+    elif command == "momentum":
+        watchlist = sys.argv[2:] if len(sys.argv) > 2 else None
+        print("\nRunning Momentum scan (big movers)...\n")
+        results = engine.run_momentum_scan(watchlist)
+
+        # Print results by category
+        print("=" * 80)
+        print(f"  MOMENTUM SCAN — {datetime.now().strftime('%Y-%m-%d %H:%M ET')}")
+        print("=" * 80)
+
+        print("\n--- UP 10%+ TODAY " + "─" * 60)
+        if results['day_up_10']:
+            for opp in results['day_up_10'][:10]:
+                print(f"  {opp.ticker:6} | {opp.details.get('change_pct', 0):+.1f}% | "
+                      f"RelVol {opp.details.get('relative_volume', 0):.1f}x | "
+                      f"Score {opp.score:.0f}")
+        else:
+            print("  No stocks up 10%+ today")
+
+        print("\n--- DOWN 10%+ TODAY " + "─" * 58)
+        if results['day_down_10']:
+            for opp in results['day_down_10'][:10]:
+                print(f"  {opp.ticker:6} | {opp.details.get('change_pct', 0):+.1f}% | "
+                      f"RelVol {opp.details.get('relative_volume', 0):.1f}x | "
+                      f"Score {opp.score:.0f}")
+        else:
+            print("  No stocks down 10%+ today")
+
+        print("\n--- UP 20%+ THIS WEEK " + "─" * 56)
+        if results['week_up_20']:
+            for opp in results['week_up_20'][:10]:
+                print(f"  {opp.ticker:6} | {opp.details.get('week_change_pct', 0):+.1f}% | "
+                      f"RSI {opp.details.get('rsi', 0):.0f} | "
+                      f"Score {opp.score:.0f}")
+        else:
+            print("  No stocks up 20%+ this week")
+
+        print("\n--- DOWN 20%+ THIS WEEK " + "─" * 54)
+        if results['week_down_20']:
+            for opp in results['week_down_20'][:10]:
+                print(f"  {opp.ticker:6} | {opp.details.get('week_change_pct', 0):+.1f}% | "
+                      f"RSI {opp.details.get('rsi', 0):.0f} | "
+                      f"Score {opp.score:.0f}")
+        else:
+            print("  No stocks down 20%+ this week")
+
+        print("\n" + "=" * 80)
 
     elif command == "scan":
         tickers = sys.argv[2:]

@@ -19,6 +19,7 @@ from src.scanners.earnings_reversal import EarningsReversalScanner
 from src.scanners.overextension import OverextensionScanner
 from src.scanners.event_day import EventDayScanner
 from src.scanners.orb_scanner import ORBScanner
+from src.scanners.momentum_scanner import MomentumScanner
 from src.utils.risk_manager import RiskManager
 from src.models.opportunity import Opportunity, SignalStrength
 from config.settings import AppConfig
@@ -49,8 +50,8 @@ class OpportunityEngine:
 
     def __init__(self, config: AppConfig):
         self.config = config
-        self.polygon = PolygonClient(config.polygon)
-        self.finviz = FinVizClient(config.finviz)
+        self.polygon = PolygonClient(api_key=config.polygon.api_key)
+        self.finviz = FinVizClient()  # Uses FINVIZ_SESSION env var
         self.risk_mgr = RiskManager(config.risk, config.account_size)
 
         # Initialize scanners
@@ -66,12 +67,15 @@ class OpportunityEngine:
         self.orb_scanner = ORBScanner(
             self.polygon, self.finviz, config.thresholds
         )
+        self.momentum_scanner = MomentumScanner(
+            self.polygon, self.finviz, config.thresholds
+        )
 
         # Store all found opportunities
         self._opportunities: list[Opportunity] = []
         self._last_scan_time: Optional[datetime] = None
 
-    def run_weekly_prep(self) -> dict:
+    def run_weekly_prep(self, watchlist: list[str] | None = None) -> dict:
         """
         Sunday night preparation scan.
 
@@ -82,6 +86,8 @@ class OpportunityEngine:
         - watchlist: Combined prioritized watchlist
         """
         logger.info("=== WEEKLY PREP SCAN ===")
+        if watchlist:
+            logger.info(f"Restricting weekly prep to {len(watchlist)} watchlist tickers")
 
         results = {
             "scan_time": datetime.now().isoformat(),
@@ -91,15 +97,21 @@ class OpportunityEngine:
             "watchlist": [],
         }
 
+        ticker_set = set(watchlist) if watchlist else None
+
         # 1. Earnings scan for the week
         logger.info("Scanning earnings calendar...")
-        err_opps = self.err_scanner.scan()
+        err_opps = self.err_scanner.scan(watchlist)
+        if ticker_set:
+            err_opps = [o for o in err_opps if o.ticker in ticker_set]
         results["earnings_week"] = err_opps
         self._opportunities.extend(err_opps)
 
         # 2. Overextension scan
         logger.info("Scanning for overextended stocks...")
-        omr_opps = self.omr_scanner.scan()
+        omr_opps = self.omr_scanner.scan(watchlist)
+        if ticker_set:
+            omr_opps = [o for o in omr_opps if o.ticker in ticker_set]
         results["overextended"] = omr_opps
         self._opportunities.extend(omr_opps)
 
@@ -188,6 +200,48 @@ class OpportunityEngine:
         return {
             "scan_time": datetime.now().isoformat(),
             "orb_opportunities": orb_opps,
+        }
+
+    def run_momentum_scan(self, watchlist: list[str] | None = None) -> dict:
+        """
+        Momentum scan for big movers.
+
+        Scans for:
+        - Day movers: Up/Down 10%+ today
+        - Week movers: Up/Down 20%+ this week
+        """
+        logger.info("=== MOMENTUM SCAN ===")
+
+        results = self.momentum_scanner.scan_all(tickers=watchlist)
+
+        all_opps = (
+            results['day_up_10'] +
+            results['day_down_10'] +
+            results['week_up_20'] +
+            results['week_down_20']
+        )
+
+        for opp in all_opps:
+            approved, reason = self.risk_mgr.validate_trade(opp)
+            opp.details["risk_approved"] = approved
+            opp.details["risk_reason"] = reason
+            if approved and opp.tradeplan:
+                self.risk_mgr.size_position(opp.tradeplan)
+
+        self._opportunities.extend(all_opps)
+        self._last_scan_time = datetime.now()
+
+        logger.info(
+            f"Momentum scan complete: "
+            f"{len(results['day_up_10'])} up 10%+ today, "
+            f"{len(results['day_down_10'])} down 10%+ today, "
+            f"{len(results['week_up_20'])} up 20%+ week, "
+            f"{len(results['week_down_20'])} down 20%+ week"
+        )
+
+        return {
+            "scan_time": datetime.now().isoformat(),
+            **results,
         }
 
     def get_top_opportunities(self, limit: int = 10,

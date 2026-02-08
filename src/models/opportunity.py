@@ -14,6 +14,7 @@ class OpportunityType(Enum):
     EVENT = "event_day_volatility"
     SECTOR = "sector_rotation"
     ORB = "opening_range_breakout"
+    MOMENTUM = "momentum_big_mover"
 
 
 class Direction(Enum):
