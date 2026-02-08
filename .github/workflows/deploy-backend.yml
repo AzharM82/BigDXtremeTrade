@@ -24,7 +24,7 @@ jobs:
       - name: Package application
         run: |
           mkdir -p deploy
-          cp -r web/api deploy/
+          cp -r web/api/* deploy/
           cp -r src deploy/
           cp -r config deploy/
           cp requirements.txt deploy/
