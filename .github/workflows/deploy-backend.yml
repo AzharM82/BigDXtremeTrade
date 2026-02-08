@@ -31,8 +31,8 @@ jobs:
           [ -f mainlist.csv ] && cp mainlist.csv deploy/ || true
 
       - name: Deploy to Azure App Service
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         with:
-          app-name: ${{ vars.AZURE_WEBAPP_NAME || 'bigdxtremetrade-api' }}
+          app-name: bigdxtremetrade-api
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: deploy
