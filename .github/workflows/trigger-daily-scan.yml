@@ -1,0 +1,25 @@
+name: Daily Advanced Scan (Backup Trigger)
+
+on:
+  schedule:
+    # 8:00 PM ET = 00:00 UTC next day (EDT, Mar-Nov)
+    - cron: '0 0 * * 1-5'
+    # 8:00 PM ET = 01:00 UTC next day (EST, Nov-Mar)
+    - cron: '0 1 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  trigger-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger advanced scan
+        run: |
+          echo "Triggering advanced scan at $(date -u)"
+          response=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST "${{ secrets.API_BASE_URL }}/api/advanced/scans/run?key=${{ secrets.SCAN_API_KEY }}")
+          echo "Response code: $response"
+          if [ "$response" -ge 200 ] && [ "$response" -lt 300 ]; then
+            echo "Scan triggered successfully"
+          else
+            echo "Scan trigger returned $response (may already be running)"
+          fi

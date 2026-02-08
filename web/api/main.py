@@ -8,9 +8,15 @@ import os
 import sys
 import json
 import logging
+import threading
+import time
+from contextlib import asynccontextmanager
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
+from zoneinfo import ZoneInfo
+
+import schedule
 
 # Add project root to sys.path so `src.*` and `config.*` imports resolve
 # In local dev, main.py is at web/api/ so root is ../../
@@ -49,11 +55,133 @@ SCAN_RESULTS_FILE = DATA_DIR / "scan_results.json"
 # Create data directory
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-# FastAPI app
+# Global scanner instances
+scanner: Optional[ScannerService] = None
+advanced_scanner: Optional[AdvancedScannerService] = None
+
+# ── Concurrency guards ───────────────────────────────────────────────────────
+_scan_lock = threading.Lock()
+_market_scan_running = False
+_advanced_scan_running = False
+
+_scan_status = {
+    "market": {"last_started": None, "last_completed": None, "last_error": None},
+    "advanced": {"last_started": None, "last_completed": None, "last_error": None},
+}
+
+ET = ZoneInfo("America/New_York")
+
+
+def _is_market_hours() -> bool:
+    """Return True if current ET time is within market hours (Mon-Fri 9:30-16:00)."""
+    now = datetime.now(ET)
+    if now.weekday() >= 5:  # Saturday=5, Sunday=6
+        return False
+    market_open = now.replace(hour=9, minute=30, second=0, microsecond=0)
+    market_close = now.replace(hour=16, minute=0, second=0, microsecond=0)
+    return market_open <= now <= market_close
+
+
+def _run_market_scan_guarded():
+    """Run market scan with concurrency guard. Skips if already running."""
+    global _market_scan_running
+    with _scan_lock:
+        if _market_scan_running:
+            logger.info("Market scan already running, skipping")
+            return
+        _market_scan_running = True
+    _scan_status["market"]["last_started"] = datetime.now(ET).isoformat()
+    try:
+        svc = get_scanner()
+        results = svc.run_all_scans(fetch_news=True)
+        save_results(results)
+        _scan_status["market"]["last_completed"] = datetime.now(ET).isoformat()
+        _scan_status["market"]["last_error"] = None
+        logger.info("Market scan completed and saved")
+    except Exception as e:
+        _scan_status["market"]["last_error"] = str(e)
+        logger.error(f"Market scan failed: {e}")
+    finally:
+        with _scan_lock:
+            _market_scan_running = False
+
+
+def _run_advanced_scan_guarded():
+    """Run advanced scan with concurrency guard. Skips if already running."""
+    global _advanced_scan_running
+    with _scan_lock:
+        if _advanced_scan_running:
+            logger.info("Advanced scan already running, skipping")
+            return
+        _advanced_scan_running = True
+    _scan_status["advanced"]["last_started"] = datetime.now(ET).isoformat()
+    try:
+        svc = get_advanced_scanner()
+        results = svc.run_all_advanced()
+        save_advanced_results(results)
+        _scan_status["advanced"]["last_completed"] = datetime.now(ET).isoformat()
+        _scan_status["advanced"]["last_error"] = None
+        logger.info("Advanced scan completed and saved")
+    except Exception as e:
+        _scan_status["advanced"]["last_error"] = str(e)
+        logger.error(f"Advanced scan failed: {e}")
+    finally:
+        with _scan_lock:
+            _advanced_scan_running = False
+
+
+# ── Scheduled jobs ────────────────────────────────────────────────────────────
+_advanced_scan_last_date: Optional[str] = None
+
+
+def _scheduled_market_scan():
+    """Triggered every 5 min by scheduler — only fires during market hours."""
+    if not _is_market_hours():
+        return
+    logger.info("Scheduled market scan triggered")
+    _run_market_scan_guarded()
+
+
+def _scheduled_advanced_scan():
+    """Triggered every minute by scheduler — fires once per day at 8:00 PM ET."""
+    global _advanced_scan_last_date
+    now = datetime.now(ET)
+    if now.weekday() >= 5:
+        return
+    if now.hour == 20 and now.minute == 0:
+        today = now.strftime("%Y-%m-%d")
+        if _advanced_scan_last_date == today:
+            return
+        _advanced_scan_last_date = today
+        logger.info("Scheduled advanced scan triggered (8:00 PM ET)")
+        _run_advanced_scan_guarded()
+
+
+def _scheduler_loop():
+    """Background thread that runs pending schedule jobs every 30s."""
+    while True:
+        schedule.run_pending()
+        time.sleep(30)
+
+
+schedule.every(5).minutes.do(_scheduled_market_scan)
+schedule.every(1).minutes.do(_scheduled_advanced_scan)
+
+
+# ── FastAPI app with lifespan ─────────────────────────────────────────────────
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    scheduler_thread = threading.Thread(target=_scheduler_loop, daemon=True)
+    scheduler_thread.start()
+    logger.info("Scheduler thread started (market scan every 5 min, advanced scan daily 8 PM ET)")
+    yield
+
+
 app = FastAPI(
     title="BigDXtremeTrade Dashboard API",
     description="End-of-day stock scanner dashboard",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 # CORS for frontend
@@ -65,10 +193,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Global scanner instances
-scanner: Optional[ScannerService] = None
-advanced_scanner: Optional[AdvancedScannerService] = None
 
 
 def get_advanced_scanner() -> AdvancedScannerService:
@@ -163,16 +287,10 @@ async def run_scans(background_tasks: BackgroundTasks, key: str = None):
     if key != expected_key:
         raise HTTPException(status_code=403, detail="Invalid API key")
 
-    def run_scan_task():
-        try:
-            svc = get_scanner()
-            results = svc.run_all_scans(fetch_news=True)
-            save_results(results)
-            logger.info("Scan completed and saved")
-        except Exception as e:
-            logger.error(f"Scan failed: {e}")
+    if _market_scan_running:
+        return {"status": "already_running", "message": "Market scan is already in progress."}
 
-    background_tasks.add_task(run_scan_task)
+    background_tasks.add_task(_run_market_scan_guarded)
 
     return {
         "status": "started",
@@ -296,16 +414,10 @@ async def run_advanced_scans(background_tasks: BackgroundTasks, key: str = None)
     if key != expected_key:
         raise HTTPException(status_code=403, detail="Invalid API key")
 
-    def run_advanced_task():
-        try:
-            svc = get_advanced_scanner()
-            results = svc.run_all_advanced()
-            save_advanced_results(results)
-            logger.info("Advanced scan completed and saved")
-        except Exception as e:
-            logger.error(f"Advanced scan failed: {e}")
+    if _advanced_scan_running:
+        return {"status": "already_running", "message": "Advanced scan is already in progress."}
 
-    background_tasks.add_task(run_advanced_task)
+    background_tasks.add_task(_run_advanced_scan_guarded)
     return {
         "status": "started",
         "message": "Advanced scan started in background. Check /api/advanced/scans for results.",
@@ -373,6 +485,29 @@ async def get_top_opportunities(limit: int = 20):
         "scan_time": results.get("scan_time"),
         "count": len(top[:limit]),
         "opportunities": top[:limit],
+    }
+
+
+@app.get("/api/scan-status")
+async def get_scan_status():
+    """Return current scan running state, timestamps, and schedule info."""
+    return {
+        "market_scan": {
+            "running": _market_scan_running,
+            "last_started": _scan_status["market"]["last_started"],
+            "last_completed": _scan_status["market"]["last_completed"],
+            "last_error": _scan_status["market"]["last_error"],
+            "schedule": "Every 5 minutes during market hours (9:30 AM - 4:00 PM ET, weekdays)",
+        },
+        "advanced_scan": {
+            "running": _advanced_scan_running,
+            "last_started": _scan_status["advanced"]["last_started"],
+            "last_completed": _scan_status["advanced"]["last_completed"],
+            "last_error": _scan_status["advanced"]["last_error"],
+            "schedule": "Daily at 8:00 PM ET (weekdays)",
+        },
+        "market_hours": _is_market_hours(),
+        "current_time_et": datetime.now(ET).isoformat(),
     }
 
 

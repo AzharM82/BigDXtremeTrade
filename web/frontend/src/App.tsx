@@ -6,6 +6,21 @@ import type { ScanResults, AdvancedScanResults, OpportunityResult } from './type
 
 type TabKey = 'market' | 'strategy' | 'top'
 
+interface ScanStatusInfo {
+  running: boolean
+  last_started: string | null
+  last_completed: string | null
+  last_error: string | null
+  schedule: string
+}
+
+interface ScanStatus {
+  market_scan: ScanStatusInfo
+  advanced_scan: ScanStatusInfo
+  market_hours: boolean
+  current_time_et: string
+}
+
 const SCAN_CONFIGS = [
   { key: 'day_up_10',       title: 'Up 10%+ Today',        color: 'green',   icon: '\u{1F4C8}', description: 'Stocks up 10% or more today' },
   { key: 'day_down_10',     title: 'Down 10%+ Today',      color: 'red',     icon: '\u{1F4C9}', description: 'Stocks down 10% or more today' },
@@ -86,6 +101,9 @@ function App() {
   const [advancedData, setAdvancedData] = useState<AdvancedScanResults | null>(null)
   const [advancedLoading, setAdvancedLoading] = useState(false)
   const [, setLastRefresh] = useState<Date | null>(null)
+  const [scanStatus, setScanStatus] = useState<ScanStatus | null>(null)
+  const [triggeringMarket, setTriggeringMarket] = useState(false)
+  const [triggeringAdvanced, setTriggeringAdvanced] = useState(false)
 
   const fetchData = async () => {
     setLoading(true)
@@ -117,14 +135,59 @@ function App() {
     }
   }
 
+  const fetchScanStatus = async () => {
+    try {
+      const response = await fetch('/api/scan-status')
+      if (response.ok) {
+        const result = await response.json()
+        setScanStatus(result)
+      }
+    } catch {
+      // Silently ignore status polling errors
+    }
+  }
+
+  const triggerMarketScan = async () => {
+    setTriggeringMarket(true)
+    try {
+      const response = await fetch('/api/scans/run?key=dev-key', { method: 'POST' })
+      if (response.ok) {
+        fetchScanStatus()
+      }
+    } catch {
+      // ignore
+    } finally {
+      setTriggeringMarket(false)
+    }
+  }
+
+  const triggerAdvancedScan = async () => {
+    setTriggeringAdvanced(true)
+    try {
+      const response = await fetch('/api/advanced/scans/run?key=dev-key', { method: 'POST' })
+      if (response.ok) {
+        fetchScanStatus()
+      }
+    } catch {
+      // ignore
+    } finally {
+      setTriggeringAdvanced(false)
+    }
+  }
+
   useEffect(() => {
     fetchData()
     fetchAdvancedData()
-    const interval = setInterval(() => {
+    fetchScanStatus()
+    const dataInterval = setInterval(() => {
       fetchData()
       fetchAdvancedData()
     }, 5 * 60 * 1000)
-    return () => clearInterval(interval)
+    const statusInterval = setInterval(fetchScanStatus, 30 * 1000)
+    return () => {
+      clearInterval(dataInterval)
+      clearInterval(statusInterval)
+    }
   }, [])
 
   const formatScanTime = (timeStr: string | null) => {
@@ -190,6 +253,28 @@ function App() {
               }}
             >
               {loading || advancedLoading ? 'Refreshing...' : 'Refresh Data'}
+            </button>
+            <button
+              onClick={triggerMarketScan}
+              disabled={triggeringMarket || scanStatus?.market_scan.running}
+              className="px-5 py-2.5 rounded-lg text-sm font-semibold text-white transition-all duration-200 disabled:opacity-40"
+              style={{
+                background: triggeringMarket || scanStatus?.market_scan.running ? '#94a3b8' : 'linear-gradient(135deg, #16a34a, #15803d)',
+                boxShadow: triggeringMarket || scanStatus?.market_scan.running ? 'none' : '0 4px 14px rgba(22, 163, 74, 0.25)',
+              }}
+            >
+              {scanStatus?.market_scan.running ? 'Market Scan Running...' : 'Run Market Scan'}
+            </button>
+            <button
+              onClick={triggerAdvancedScan}
+              disabled={triggeringAdvanced || scanStatus?.advanced_scan.running}
+              className="px-5 py-2.5 rounded-lg text-sm font-semibold text-white transition-all duration-200 disabled:opacity-40"
+              style={{
+                background: triggeringAdvanced || scanStatus?.advanced_scan.running ? '#94a3b8' : 'linear-gradient(135deg, #7c3aed, #6d28d9)',
+                boxShadow: triggeringAdvanced || scanStatus?.advanced_scan.running ? 'none' : '0 4px 14px rgba(124, 58, 237, 0.25)',
+              }}
+            >
+              {scanStatus?.advanced_scan.running ? 'Strategy Scan Running...' : 'Run Strategy Scan'}
             </button>
           </div>
         </div>
@@ -332,7 +417,7 @@ function App() {
       {/* ── Footer ──────────────────────────────────────────────── */}
       <footer className="px-8 py-6 mt-8" style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
         <div className="max-w-[1800px] mx-auto text-center text-gray-400 text-xs tracking-wider uppercase">
-          BigDXtreme Trade Scanner &bull; Scans run daily at 4:00 PM ET
+          BigDXtreme Trade Scanner &bull; Market scans every 5 min (market hours) &bull; Strategy scans daily at 8:00 PM ET
         </div>
       </footer>
     </div>
