@@ -29,7 +29,8 @@ class AdvancedScannerService:
 
     def _load_mainlist(self) -> list[str]:
         """Load ticker symbols from mainlist.csv."""
-        mainlist_path = Path(__file__).parent.parent.parent / "mainlist.csv"
+        _dir = Path(__file__).parent
+        mainlist_path = _dir / "mainlist.csv" if (_dir / "src").is_dir() else _dir.parent.parent / "mainlist.csv"
         tickers = []
         try:
             with open(mainlist_path, 'r', encoding='utf-8') as f:
