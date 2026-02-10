@@ -11,7 +11,8 @@ build/
 .eggs/
 
 # Data (don't commit market data or exports)
-data/
+/data/
+web/data/
 *.csv
 !mainlist.csv
 
